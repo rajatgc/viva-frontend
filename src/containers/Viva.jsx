@@ -1,5 +1,4 @@
 import VivaQuesBody from "../containers/VivaQuesBody";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -102,11 +101,9 @@ const Viva = ({
           );
         })}
         <div className="viva_btn">
-          {/* <Link to="/summary"> */}
           <button className="btn btn-primary" onClick={generateAnswersheet}>
             continue
           </button>
-          {/* </Link> */}
         </div>
       </div>
     </div>
