@@ -24,8 +24,8 @@ function App() {
   const token = process.env.REACT_APP_ADMIN_TOKEN;
 
   //! to get the role of the user accessing the activity (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  // const role = "teacher";
-  const role = "student";
+  const role = "teacher";
+  // const role = "student";
   // useEffect(() => {
   //   axios
   //     .get(
