@@ -17,16 +17,6 @@ export function scormLogic() {
     scormId = parseInt(url.substr(url.indexOf("=") + 1, 3));
     scorm.quit();
     console.log("quit");
-    // if (marks != 0) {
-    //   var success = scorm.set("cmi.core.lesson_status", "completed");
-    //   if (success) {
-    //     //... disconnect from the LMS, we don't need to do anything else.
-    //     scorm.quit();
-    //     console.log("quit");
-    //   } else {
-    //     console.log("not quitiing!!");
-    //   }
-    // } else console.log("You failed!");
   } else {
     console.log("Could not connect to lms");
   }

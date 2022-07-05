@@ -16,42 +16,43 @@ function App() {
   // ? Functions and methods required for the LMS
 
   //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  let courseId = 546;
+  let courseId;
   let [userId, scormId] = scormLogic();
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `http://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
-  //     )
-  //     .then((data) => {
-  //       courseId = data.data.courseid;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(
+        `http://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
+      )
+      .then((data) => {
+        courseId = data.data.courseid;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
   console.log(userId);
-  let role = "teacher";
-  let traineeId = "testuser";
-  let trainerId = "12345";
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
-  //     )
-  //     .then((data) => {
-  //       if (data.data.roles[0].shortname === "student") {
-  //         traineeId = userId;
-  //         role = "student";
-  //       } else {
-  //         trainerId = userId;
-  //         role = "teacher";
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  console.log(courseId);
+  let role;
+  let traineeId;
+  let trainerId;
+  useEffect(() => {
+    axios
+      .get(
+        `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
+      )
+      .then((data) => {
+        if (data.data.roles[0].shortname === "student") {
+          traineeId = userId;
+          role = "student";
+        } else {
+          trainerId = userId;
+          role = "teacher";
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // !-------------------------------------------------------------------------------------------------------------------------------
 
