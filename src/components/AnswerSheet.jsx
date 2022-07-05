@@ -13,7 +13,7 @@ const AnswerSheet = ({ getUserAnswer, trainerId, courseId }) => {
   useEffect(() => {
     axios
       .get(
-        `https://viva-module.herokuapp.com/viva/${courseId}/${trainerId}/${getUserAnswer}`
+        `https://viva-module.herokuapp.com/viva/${courseId}/${getUserAnswer}`
       )
       .then((data) => {
         setUseranswer(data.data);

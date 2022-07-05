@@ -39,7 +39,7 @@ const VivaSummary = ({
       // * get the score from the answersheet
       axios
         .get(
-          `https://viva-module.herokuapp.com/answersheet/${courseId}/${trainerId}/${currentUser.name}`
+          `https://viva-module.herokuapp.com/answersheet/${courseId}/${currentUser.name}`
         )
         .then((data) => {
           data.data.answers.map((answer) => {

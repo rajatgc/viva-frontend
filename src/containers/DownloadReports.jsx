@@ -16,6 +16,7 @@ const DownloadReports = ({ courseId, setGetuseranswer }) => {
       .then((data) => {
         setUservivaCopy(data.data);
         setUserviva(data.data);
+        console.log(data.data);
       })
       .catch((err) => console.log(err));
   }, []);

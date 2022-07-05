@@ -7,34 +7,51 @@ import TraineePage from "./pages/Trainee/TraineePage";
 import AnswerSheet from "./components/AnswerSheet";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { setMarks } from "./Methods/scromLogic";
+import { scormLogic } from "./Methods/scromLogic";
 import axios from "axios";
 function App() {
-  // !-------------------------------------------------------------------------------------------------------------------------------
-  // ? Functions and methods required for the LMS
-  //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  const courseId = 546;
-  // setMarks();
-
-  //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  const trainerId = "12345";
-  const traineeId = "bhavya";
-
   //! getting the admin token for API access
   const token = process.env.REACT_APP_ADMIN_TOKEN;
+  // !-------------------------------------------------------------------------------------------------------------------------------
+  // ? Functions and methods required for the LMS
 
-  //! to get the role of the user accessing the activity (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  const role = "teacher";
-  // const role = "student";
+  //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
+  let courseId = 546;
+  let [userId, scormId] = scormLogic();
   // useEffect(() => {
   //   axios
   //     .get(
-  //       `spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=130281`
+  //       `http://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
   //     )
   //     .then((data) => {
-  //       console.log(data);
+  //       courseId = data.data.courseid;
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
   //     });
-  // });
+  // }, []);
+
+  //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
+  console.log(userId);
+  let role = "teacher";
+  let traineeId = "testuser";
+  let trainerId = "12345";
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
+  //     )
+  //     .then((data) => {
+  //       if (data.data.roles[0].shortname === "student") {
+  //         traineeId = userId;
+  //         role = "student";
+  //       } else {
+  //         trainerId = userId;
+  //         role = "teacher";
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   // !-------------------------------------------------------------------------------------------------------------------------------
 

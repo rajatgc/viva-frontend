@@ -33,7 +33,6 @@ const Trainer1 = ({
       axios
         .post("https://viva-module.herokuapp.com/viva", {
           courseId: courseId.toString(),
-          trainerId: trainerId.toString(),
           traineeId: currentUser.name.toString(),
           status: 1,
         })
