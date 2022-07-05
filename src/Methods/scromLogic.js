@@ -14,7 +14,9 @@ export function scormLogic() {
     var url = document.referrer;
     // let url =
     //   "https://spicelearnweb.xrcstaging.in/mod/scorm/loadSCO.php?a=320&scoid=640&currentorg=CourseID-org&mode=&attempt=12";
+    console.log(url);
     scormId = parseInt(url.substr(url.indexOf("=") + 1, 3));
+    console.log(scormId);
     scorm.quit();
     console.log("quit");
   } else {

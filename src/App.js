@@ -18,10 +18,12 @@ function App() {
   //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
   let courseId;
   let [userId, scormId] = scormLogic();
+  console.log(userId);
+  console.log(scormId);
   useEffect(() => {
     axios
       .get(
-        `http://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
+        `https://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
       )
       .then((data) => {
         courseId = data.data.courseid;
@@ -32,8 +34,6 @@ function App() {
   }, []);
 
   //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  console.log(userId);
-  console.log(courseId);
   let role;
   let traineeId;
   let trainerId;
