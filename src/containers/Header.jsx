@@ -1,4 +1,3 @@
-// import logo from "../images/logoWhite.png";
 import { Link } from "react-router-dom";
 const Header = () => {
   return (
@@ -7,8 +6,10 @@ const Header = () => {
         <div className="headerNav row">
           <div className="headerNav_logo">
             <Link to="/">
-              {/* <img src={logo} alt="spicelearn-logo" /> */}
-              <span>Image</span>
+              <img
+                src="https://res.cloudinary.com/imrajat24/image/upload/v1657198906/logoWhite.7208d9659242baef9f0d_g5e0ty.png"
+                alt="spicelearn-logo"
+              />
             </Link>
           </div>
           <div className="headerNav_heading">
