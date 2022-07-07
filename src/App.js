@@ -16,43 +16,91 @@ function App() {
   // ? Functions and methods required for the LMS
 
   //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  let courseId;
   let [userId, scormId] = scormLogic();
-  console.log(userId);
-  console.log(scormId);
+  const [role, setRole] = useState(null);
+  const [courseId, setCourseId] = useState(null);
+  const [traineeId, settraineeId] = useState();
+  const [trainerId, settrainerId] = useState();
+  console.log(courseId, userId);
   useEffect(() => {
     axios
       .get(
-        `https://uat.spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
+        `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_get_courseid&moodlewsrestformat=json&scormid=${scormId}`
       )
       .then((data) => {
-        courseId = data.data.courseid;
+        console.log(data.data);
+        setCourseId(data.data.courseid);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
-  let role;
-  let traineeId;
-  let trainerId;
   useEffect(() => {
-    axios
-      .get(
-        `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
-      )
-      .then((data) => {
-        if (data.data.roles[0].shortname === "student") {
-          traineeId = userId;
-          role = "student";
-        } else {
-          trainerId = userId;
-          role = "teacher";
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    tryFunc();
+  }, [courseId]);
+
+  const tryFunc = () => {
+    console.log(courseId, userId);
+    if (courseId) {
+      axios
+        .get(
+          `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
+        )
+        .then((data) => {
+          console.log(data.data);
+          if (data.data.roles[0].shortname === "student") {
+            // traineeId = userId;
+            settraineeId(userId);
+            setRole("student");
+            // role = "student";
+            console.log(role);
+          } else {
+            // trainerId = userId;
+            settrainerId(userId);
+            setRole("teacher");
+            // role = "teacher";
+            console.log(role);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+  useEffect(() => {
+    tryFunc2();
+  }, [role]);
+  const tryFunc2 = () => {
+    console.log(role, traineeId, trainerId);
+    getUsers();
+    //* get the number of question papers in a course id (if exists)
+    getQuestionPaper();
+    console.log(role, traineeId, trainerId);
+  };
+
+  //! getting the trainerid and trainer name from the system (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
+  // let role;
+  // let traineeId;
+  // let trainerId;
+  // console.log(courseId);
+  // useEffect(() => {
+  //   if (courseId) {
+  //     axios
+  //       .get(
+  //         `https://spicelearnweb.xrcstaging.in/webservice/rest/server.php?wstoken=${token}&wsfunction=local_api_user_role&moodlewsrestformat=json&courseid=${courseId}&username=${userId}`
+  //       )
+  //       .then((data) => {
+  //         console.log(data.data);
+  //         if (data.data.roles[0].shortname === "student") {
+  //           traineeId = userId;
+  //           role = "student";
+  //         } else {
+  //           trainerId = userId;
+  //           role = "teacher";
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [courseId]);
 
   // !-------------------------------------------------------------------------------------------------------------------------------
 
@@ -98,7 +146,7 @@ function App() {
     let promises = [];
     let k = 0;
     let i = 1;
-    users.map((user) => {
+    users?.map((user) => {
       const p = new Promise((resolve, reject) => {
         setTimeout(() => {
           axios
@@ -158,13 +206,13 @@ function App() {
 
   //! Use Effect hooks
   //* get all the users(including trainers and trainees) present in the current course
-  useEffect(() => {
-    getUsers();
-    //* get the number of question papers in a course id (if exists)
-    getQuestionPaper();
-  }, []);
+  // useEffect(() => {
+  //   getUsers();
+  //   //* get the number of question papers in a course id (if exists)
+  //   getQuestionPaper();
+  // }, []);
 
-  return (
+  return role ? (
     <div className="App">
       <Routes>
         {role === "student" ? (
@@ -257,6 +305,8 @@ function App() {
         />
       </Routes>
     </div>
+  ) : (
+    <p>loading...</p>
   );
 }
 

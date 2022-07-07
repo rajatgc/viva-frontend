@@ -143,7 +143,6 @@ const CreateSet = ({ questionPaper, courseId }) => {
             className="btn btn-primary"
             onClick={() => {
               navigate("/");
-              window.location.reload();
             }}
           >
             Continue
