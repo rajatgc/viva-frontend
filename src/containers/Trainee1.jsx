@@ -3,7 +3,6 @@ import getDate from "../Methods/getDate";
 import rightSelected from "../images/tick.png";
 import right from "../images/tick-select.png";
 import { useEffect } from "react";
-import pipwerks from "../Methods/scromWrapper";
 import axios from "axios";
 const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
   // !-------------------------------------------------------------------------------------------------------------------------------
@@ -18,9 +17,7 @@ const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
   const [viva, setViva] = useState();
   const [marks, setMarks] = useState();
   const [totalmarks, setTotalmarks] = useState();
-  const [currentTime, setCurrentTime] = useState();
-  const [scormMarks, setScormMarks] = useState();
-  let scorm = pipwerks.SCORM;
+  let [currentTime, setCurrentTime] = useState();
 
   // !-------------------------------------------------------------------------------------------------------------------------------
 
@@ -51,7 +48,6 @@ const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
         });
       });
       setMarks(temp1);
-      setScormMarks(temp1);
       let temp2 = 0;
       viva.questionPaper.questions.map((question) => {
         question.steps.map((step) => {
@@ -66,8 +62,7 @@ const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
   const acknowledgeHandler = () => {
     if (tick) {
       setStatus(3);
-      // let tempDate = new Date().toLocaleString();
-      // setCurrentTime(tempDate);
+      setCurrentTime(new Date().toLocaleString());
       axios
         .put("https://viva-module.herokuapp.com/viva", {
           courseId: courseId.toString(),
@@ -77,18 +72,15 @@ const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
         .catch((err) => {
           console.log(err);
         });
-
-      // ! scorm logic to set the marks and the status
-      let success = scorm.set("cmi.core.lesson_status", "completed");
-      let score = scorm.set("cmi.core.score.raw", scormMarks);
-      let quit = scorm.quit();
-      console.log("score = " + score);
-      console.log("success = " + success);
-      console.log("quit = " + quit);
     }
+
+    // * function to get the current date and time
+    const getCurrentTime = () => {};
   };
+
   // * method to get the currrent date
   const date = getDate();
+
   return (
     <div className="trainer1 trainee1">
       <div className="trainer1_header trainee1_header--1">
@@ -133,9 +125,9 @@ const Trainee1 = ({ status, setStatus, traineeId, courseId }) => {
             <p className="status_para">
               Thanks for the acknowledgement. You can now exit the activity.
             </p>
-            {/* <p className="status_para">
+            <p className="status_para">
               Date and Time of Acknowledgement: <b>{currentTime} </b>
-            </p> */}
+            </p>
           </div>
         )}
       </div>

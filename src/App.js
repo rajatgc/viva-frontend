@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { scormLogic } from "./Methods/scromLogic";
 import axios from "axios";
+import DgcaAns from "./containers/DgcaAns";
 function App() {
   //! getting the admin token for API access
   const token = process.env.REACT_APP_ADMIN_TOKEN;
@@ -17,11 +18,12 @@ function App() {
 
   //! getting the course id from mooddle (proper lms wala part could be done in future, abhi k liye we have hardcoded it...)
   let [userId, scormId] = scormLogic();
+  // let [userId, scormId] = ["deptadmin_inf", 471];
   const [role, setRole] = useState(null);
   const [courseId, setCourseId] = useState(null);
   const [traineeId, settraineeId] = useState();
   const [trainerId, settrainerId] = useState();
-  console.log(courseId, userId);
+  // console.log(courseId, userId);
   useEffect(() => {
     axios
       .get(
@@ -50,16 +52,12 @@ function App() {
         .then((data) => {
           console.log(data.data);
           if (data.data.roles[0].shortname === "student") {
-            // traineeId = userId;
             settraineeId(userId);
             setRole("student");
-            // role = "student";
             console.log(role);
           } else {
-            // trainerId = userId;
             settrainerId(userId);
             setRole("teacher");
-            // role = "teacher";
             console.log(role);
           }
         })
@@ -70,7 +68,7 @@ function App() {
     tryFunc2();
   }, [role]);
   const tryFunc2 = () => {
-    console.log(role, traineeId, trainerId);
+    // console.log(role, traineeId, trainerId);
     getUsers();
     //* get the number of question papers in a course id (if exists)
     getQuestionPaper();
@@ -253,7 +251,12 @@ function App() {
           path="/createSet"
           exact
           element={
-            <CreateSetPage questionPaper={questionPaper} courseId={courseId} />
+            <CreateSetPage
+              questionPaper={questionPaper}
+              setquestionPaper={setquestionPaper}
+              courseId={courseId}
+              token={token}
+            />
           }
         />
         <Route
@@ -303,10 +306,17 @@ function App() {
             />
           }
         />
+        <Route
+          path="/downloadAns"
+          exact
+          element={
+            <DgcaAns getUserAnswer={getUserAnswer} courseId={courseId} />
+          }
+        />
       </Routes>
     </div>
   ) : (
-    <p>loading...</p>
+    <h2 className="roleLoading">User Role Not Found....</h2>
   );
 }
 
